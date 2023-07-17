@@ -1,20 +1,31 @@
 const addbtn = document.querySelector('.btn');
-const list = document.querySelector('.main ul');
-
-var count = 1;
+const mainContainers = document.querySelectorAll('.main');
 
 addbtn.addEventListener('click', function () {
-
-    const myLi = document.createElement('li');
-    myLi.innerHTML = count++;
-    list.appendChild(myLi);
-    
-
-    const deltIcon = document.createElement('i');
-    deltIcon.innerHTML = '<i id="rem" class="fa fa-times" aria-hidden="true"></i>';
-    myLi.appendChild(deltIcon);
-
-    deltIcon.addEventListener('click', function () {
-        myLi.remove();
-    });
+    for (let i = 0; i < mainContainers.length; i++) {
+        const container = mainContainers[i];
+        const list = container.querySelector('ul');
+        const myLi = document.createElement('li');
+        list.appendChild(myLi);
+        adjustNumber();
+    }
 });
+
+function adjustNumber(){
+    for (let i = 0; i < mainContainers.length; i++) {
+        const container = mainContainers[i];
+        const list = container.querySelector('ul');
+        const liItems = list.getElementsByTagName('li');
+        for (let j = 0; j < liItems.length; j++) {
+            liItems[j].innerHTML = j + 1;
+            const deltIcon = document.createElement('i');
+            deltIcon.className = 'fa fa-times';
+            liItems[j].appendChild(deltIcon);
+            deltIcon.addEventListener('click', function () {
+                liItems[j].remove();
+               adjustNumber(list);
+            });
+        }
+    }
+}
+console.log(mainContainers.length);
